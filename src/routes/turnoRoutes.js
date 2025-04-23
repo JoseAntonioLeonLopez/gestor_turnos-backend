@@ -4,6 +4,7 @@ const validarTurno = require('../middlewares/validarTurno');
 
 const router = express.Router();
 
+// Rutas para gestionar turnos
 router.post('/generar', validarTurno, TurnoController.generarTurno);
 router.get('/llamados', TurnoController.verTurnosLlamados);
 router.get('/en-espera', TurnoController.obtenerTurnosEnEspera);

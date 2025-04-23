@@ -1,5 +1,6 @@
 const Turno = require('../models/Turno');
 
+// Función para generar un código aleatorio para el turno
 function generateCode() {
   const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const numbers = '0123456789';
@@ -12,11 +13,12 @@ function generateCode() {
 }
 
 module.exports = {
+  // Crea un nuevo turno y lo emite por WebSocket
   generarTurno: async (req, res, next) => {
     try {
       const { nombre } = req.body;
 
-      // Validaciones adicionales en el backend
+      // Validación del nombre
       if (!nombre || typeof nombre !== 'string' || nombre.length < 3 || nombre.length > 50) {
         return res.status(400).json({ error: 'Nombre inválido. Debe tener entre 3 y 50 caracteres y solo contener letras.' });
       }
@@ -31,6 +33,7 @@ module.exports = {
     }
   },
 
+  // Obtiene todos los turnos en espera
   obtenerTurnosEnEspera: async (req, res, next) => {
     try {
       // Buscar todos los turnos con estado "en espera"
@@ -41,6 +44,7 @@ module.exports = {
     }
   },
 
+  // Obtiene todos los turnos llamados
   verTurnosLlamados: async (req, res, next) => {
     try {
       // Buscar todos los turnos con estado "llamado"
@@ -51,6 +55,7 @@ module.exports = {
     }
   },
 
+  // Avanza el primer turno en espera a "llamado"
   avanzarTurno: async (req, res, next) => {
     try {
       const turno = await Turno.findOne({ where: { estado: 'en espera' } });
@@ -74,6 +79,7 @@ module.exports = {
     }
   },  
 
+  // Cambia el estado del primer turno llamado a "atendiendo"
   atenderTurno: async (req, res, next) => {
     try {
       // Buscar el primer turno "llamado"
@@ -93,6 +99,7 @@ module.exports = {
     }
   },
 
+  // Finaliza y elimina el turno que está siendo atendido
   finalizarTurno: async (req, res, next) => {
     try {
       // Buscar el primer turno con estado "atendiendo"

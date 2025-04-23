@@ -1,6 +1,7 @@
 const { Sequelize } = require('sequelize');
 require('dotenv').config();
 
+// Creamos una nueva instancia de Sequelize para conectarnos a la base de datos MySQL
 const sequelize = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,
@@ -12,4 +13,5 @@ const sequelize = new Sequelize(
   }
 );
 
+// Exportamos la instancia de Sequelize para usarla en otros archivos
 module.exports = sequelize;

@@ -4,15 +4,15 @@ const sequelize = require('../config/database');
 const Turno = sequelize.define('Turno', {
   codigo: {
     type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
+    allowNull: false, // El código no puede ser nulo
+    unique: true, // El código debe ser unico
     validate: {
       len: [4, 4],  // El código debe ser exactamente de 4 caracteres
       isAlphanumeric: true, // Solo letras y números
     },
   },
   estado: {
-    type: DataTypes.ENUM('en espera', 'llamado', 'atendiendo', 'finalizado'),
+    type: DataTypes.ENUM('en espera', 'llamado', 'atendiendo', 'finalizado'), 
     defaultValue: 'en espera',
   },
   nombre: {

@@ -1,9 +1,11 @@
 module.exports = function(io) {
+  // Manejar la conexión de un nuevo cliente
   io.on('connection', (socket) => {
     console.log('Nuevo cliente conectado');
 
+    // Cuando el cliente solicita los turnos en espera
     socket.on('solicitarTurnosEnEspera', () => {
-      // Obtener los turnos en espera de la base de datos y enviarlos al cliente
+      // Obtener y enviar los turnos en espera al cliente
       Turno.findAll({ where: { estado: 'en espera' } })
         .then((turnosEnEspera) => {
           socket.emit('turnosEnEspera', turnosEnEspera);
@@ -13,56 +15,46 @@ module.exports = function(io) {
         });
     });
 
-    // Emitir los turnos "llamados" al conectarse un cliente
+    // Enviar los turnos llamados al conectarse un cliente
     socket.emit('turnosLlamados', { message: 'Turnos llamados' });
 
-    // Escuchar por la actualización de turno y emitir a todos los clientes
+    // Manejar la actualización de un turno
     socket.on('actualizarTurno', async (turno) => {
       try {
         console.log('Actualizando turno:', turno);
-    
+        
         // Actualizar el turno en la base de datos
         await Turno.update({ estado: turno.estado }, { where: { codigo: turno.codigo } });
-    
-        // Emitir el turno actualizado a todos los clientes conectados
+        
+        // Emitir el turno actualizado y la lista de turnos en espera a todos los clientes
         io.emit('nuevoTurno', turno);
-    
-        // Obtener la lista de turnos en espera después de la actualización
         const turnosEnEspera = await Turno.findAll({ where: { estado: 'en espera' } });
-    
-        // Emitir la lista de turnos en espera actualizada a todos los clientes
-        io.emit('turnosEnEspera', turnosEnEspera);  // Actualiza la lista de turnos en espera
-    
+        io.emit('turnosEnEspera', turnosEnEspera);
       } catch (error) {
         console.error('Error al actualizar turno:', error);
       }
     });    
 
-    // Enviar los turnos cuando se avance el estado del turno
+    // Manejar el avance de un turno
     socket.on('avanzarTurno', async (turno) => {
       console.log('Avanzando turno:', turno);
       
-      // Avanzar el turno a "llamado" (este paso ya lo haces en el backend)
-      const turnoAvanzado = await Turno.update({ estado: 'llamado' }, { where: { codigo: turno.codigo } });
+      // Actualizar el estado del turno a "llamado"
+      await Turno.update({ estado: 'llamado' }, { where: { codigo: turno.codigo } });
       
-      // Emitir el turno actualizado a todos los clientes
+      // Emitir el turno actualizado y la nueva lista de turnos en espera
       io.emit('nuevoTurno', turno);
-      
-      // Obtener la lista de turnos en espera después de actualizar
       const turnosEnEspera = await Turno.findAll({ where: { estado: 'en espera' } });
-      
-      // Emitir la lista de turnos en espera actualizada
       io.emit('turnosEnEspera', turnosEnEspera);
     });
     
-
-    // Escuchar por el evento de finalizar turno
+    // Manejar la finalización de un turno
     socket.on('finalizarTurno', (turno) => {
       console.log('Finalizando turno:', turno);
-      io.emit('nuevoTurno', turno); // Emitir el turno finalizado a todos los clientes conectados
+      io.emit('nuevoTurno', turno);
     });
 
-    // Cuando un cliente se desconecte
+    // Manejar la desconexión de un cliente
     socket.on('disconnect', () => {
       console.log('Cliente desconectado');
     });

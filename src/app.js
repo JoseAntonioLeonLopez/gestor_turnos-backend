@@ -10,35 +10,40 @@ require('dotenv').config();
 
 const app = express();
 
-// Configurar CORS para HTTP y WebSockets
+// Configuración de CORS para permitir todas las conexiones
 const corsOptions = {
-  origin: '*',  // Permite todos los orígenes. (Puedes especificar tu dominio aquí)
+  origin: '*',
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type'],
 };
 
-app.use(cors(corsOptions)); // Habilitar CORS en el servidor
-app.use(express.json()); // Habilitar el parseo de JSON
+app.use(cors(corsOptions));
+app.use(express.json());
 
+// Crear servidor HTTP y configurar Socket.IO
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: '*', // Permitir conexiones de todos los orígenes para WebSockets
+    origin: '*',
     methods: ['GET', 'POST']
   }
 });
 
-app.use(express.json());
+// Middleware para añadir io a cada solicitud
 app.use((req, res, next) => {
   req.io = io;
   next();
 });
+
+// Rutas para la API de turnos
 app.use('/api/turnos', turnoRoutes);
 
+// Configurar sockets para turnos
 turnoSockets(io);
 
 const PORT = process.env.PORT || 3000;
 
+// Iniciar el servidor y conectar a la base de datos
 server.listen(PORT, async () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
   try {
