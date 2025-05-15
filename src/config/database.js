@@ -13,5 +13,18 @@ const sequelize = new Sequelize(
   }
 );
 
+// Función para sincronizar la base de datos
+const syncDatabase = async () => {
+  try {
+    await sequelize.sync({ force: true });
+    console.log('Base de datos borrada y recreada.');
+  } catch (error) {
+    console.error('Error al sincronizar la base de datos:', error);
+  }
+};
+
+// Llamamos a la función de sincronización
+syncDatabase();
+
 // Exportamos la instancia de Sequelize para usarla en otros archivos
 module.exports = sequelize;
