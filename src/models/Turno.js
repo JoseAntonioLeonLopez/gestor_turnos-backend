@@ -1,5 +1,5 @@
-const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
+const { DataTypes } = require('sequelize');
 
 const Turno = sequelize.define('Turno', {
   codigo: {
@@ -19,7 +19,7 @@ const Turno = sequelize.define('Turno', {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
-      len: [3, 50],  // Longitud del nombre entre 3 y 50 caracteres
+      len: [3, 30],  // Longitud del nombre 
       is: /^[a-zA-Z\s]+$/i, // Permite letras y espacios
     },
   },
