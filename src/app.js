@@ -43,14 +43,24 @@ turnoSockets(io);
 
 const PORT = process.env.PORT || 3000;
 
+// Función para sincronizar la base de datos
+const syncDatabase = async () => {
+  try {
+    await sequelize.sync({ force: true });
+    console.log('Base de datos borrada y recreada.');
+  } catch (error) {
+    console.error('Error al sincronizar la base de datos:', error);
+  }
+};
+
 // Iniciar el servidor y conectar a la base de datos
 server.listen(PORT, async () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
   try {
     await sequelize.authenticate();
     console.log('Base de datos conectada.');
-    await sequelize.sync({ alter: true });
-    console.log('Tablas sincronizadas.');
+    // Sincronizar la base de datos después de la conexión
+    await syncDatabase();
   } catch (error) {
     console.error('Error conectando a la base de datos:', error);
   }
