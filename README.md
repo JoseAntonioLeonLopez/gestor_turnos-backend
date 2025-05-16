@@ -43,4 +43,9 @@ Este repositorio contiene el backend para el Sistema de Gestión de Turnos, una 
    npm run dev
    ```
 
+4. Iniciar los test:
+   ```
+   npm test
+   ```
+
 El servidor estará corriendo en `http://localhost:3000`.
