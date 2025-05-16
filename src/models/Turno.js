@@ -19,8 +19,8 @@ const Turno = sequelize.define('Turno', {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
-      len: [3, 30],  // Longitud del nombre 
-      is: /^[a-zA-Z\s]+$/i, // Permite letras y espacios
+      len: [3, 40],  // Longitud del nombre 
+      is: /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/i, // Permite letras, espacios y tildes
     },
   },
 });
