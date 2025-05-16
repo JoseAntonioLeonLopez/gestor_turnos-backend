@@ -5,7 +5,7 @@ const validarTurno = [
   body('nombre')
     .trim()  // Elimina espacios en blanco al inicio y final
     .notEmpty().withMessage('El nombre es obligatorio.')  // Verifica que no esté vacío
-    .isLength({ min: 3, max: 40 }).withMessage('El nombre debe tener entre 3 y 40 caracteres.')  // Longitud permitida
+    .isLength({ min: 3, max: 35 }).withMessage('El nombre debe tener entre 3 y 35 caracteres.')  // Longitud permitida
     .matches(/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/).withMessage('El nombre solo puede contener letras, espacios y tildes.'),  // Evita caracteres no permitidos
 
   // Manejo de errores

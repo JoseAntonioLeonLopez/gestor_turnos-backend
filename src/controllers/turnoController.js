@@ -19,8 +19,8 @@ module.exports = {
       const { nombre } = req.body;
 
       // Validación del nombre
-      if (!nombre || typeof nombre !== 'string' || nombre.length < 3 || nombre.length > 40) {
-        return res.status(400).json({ error: 'Nombre inválido. Debe tener entre 3 y 40 caracteres y solo contener letras y tildes.' });
+      if (!nombre || typeof nombre !== 'string' || nombre.length < 3 || nombre.length > 35) {
+        return res.status(400).json({ error: 'Nombre inválido. Debe tener entre 3 y 35 caracteres y solo contener letras y tildes.' });
       }
 
       const codigo = generateCode();
