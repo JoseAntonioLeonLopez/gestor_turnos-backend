@@ -122,5 +122,30 @@ module.exports = {
     } catch (error) {
       next(error);
     }
-  },  
+  },
+
+  // Obtiene el estado del panel
+  obtenerEstadoPanel: async (req, res, next) => {
+    try {
+      const turnoAtendiendo = await Turno.findOne({ where: { estado: 'atendiendo' } });
+      if (turnoAtendiendo) {
+        return res.json({ estado: 'atendiendo', turnoActual: turnoAtendiendo });
+      }
+
+      const turnoLlamado = await Turno.findOne({ where: { estado: 'llamado' } });
+      if (turnoLlamado) {
+        return res.json({ estado: 'llamado', turnoActual: turnoLlamado });
+      }
+
+      const turnoEnEspera = await Turno.findOne({ where: { estado: 'en espera' } });
+      if (turnoEnEspera) {
+        return res.json({ estado: 'espera', turnoActual: null });
+      }
+
+      res.json({ estado: 'sin_turnos', turnoActual: null });
+    } catch (error) {
+      next(error);
+    }
+  },
+
 };

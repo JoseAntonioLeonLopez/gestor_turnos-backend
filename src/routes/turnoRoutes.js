@@ -10,6 +10,7 @@ router.get('/llamados', TurnoController.verTurnosLlamados);
 router.get('/en-espera', TurnoController.obtenerTurnosEnEspera);
 router.post('/avanzar', TurnoController.avanzarTurno);
 router.post('/atender', TurnoController.atenderTurno);
-router.post('/finalizar', TurnoController.finalizarTurno); 
+router.post('/finalizar', TurnoController.finalizarTurno);
+router.get('/estado-panel', TurnoController.obtenerEstadoPanel);
 
 module.exports = router;
