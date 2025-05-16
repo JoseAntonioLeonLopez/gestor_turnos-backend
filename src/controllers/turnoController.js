@@ -124,7 +124,7 @@ module.exports = {
     }
   },
 
-  // Obtiene el estado del panel
+  // Obtiene el estado del panel del medico
   obtenerEstadoPanel: async (req, res, next) => {
     try {
       const turnoAtendiendo = await Turno.findOne({ where: { estado: 'atendiendo' } });
